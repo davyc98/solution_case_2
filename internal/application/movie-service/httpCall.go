@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"time"
 
-	log "github.com/sirupsen/logrus"
+	"log"
 )
 
-func searchMovie(url string, resp interface{}) (err error, executionTime float64) {
+func searchMovie(url string, resp interface{}) (executionTime float64, err error) {
 
 	start := time.Now()
 	response, err := http.Get(url)
@@ -18,17 +18,17 @@ func searchMovie(url string, resp interface{}) (err error, executionTime float64
 	executionTime = float64(since.Microseconds() / 1000)
 	if err != nil {
 		log.Println(err.Error())
-		return err, executionTime
+		return executionTime, err
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		log.Println(err.Error())
-		return err, executionTime
+		return executionTime, err
 	}
 	response.Body.Close()
 
 	json.Unmarshal(body, &resp)
 
-	return err, executionTime
+	return executionTime, err
 }
