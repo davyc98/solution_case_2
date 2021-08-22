@@ -1,0 +1,2 @@
+1. URL for Search = GET http://127.0.0.1:8089/search/(movieName)?page=2 e.g: http://127.0.0.1:8089/search/Batman?page=2
+2. URL for Detail = GET http://127.0.0.1:8089/detail?movieId=(movieID) e.g: http://127.0.0.1:8089/detail?movieId=tt4853102 
