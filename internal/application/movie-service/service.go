@@ -1,4 +1,4 @@
-package pusdafil
+package movie
 
 import "context"
 
@@ -13,12 +13,12 @@ type MovieService struct {
 }
 
 // NewService instantiation
-func NewService(ctx context.Context, pusdafil iMovie) *MovieService {
+func NewService(ctx context.Context, movie iMovie) *MovieService {
 
 	return &MovieService{
 		ctx: ctx,
 		movieRepo: MovieRepo{
-			movie: pusdafil,
+			movie: movie,
 		},
 	}
 }

@@ -8,7 +8,7 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/kelseyhightower/envconfig"
-	pusdafil "github.com/solution_case_2/internal/application/movie-service"
+	movie "github.com/solution_case_2/internal/application/movie-service"
 	"github.com/solution_case_2/internal/interactor/rest"
 	mysql "github.com/solution_case_2/internal/repository/implementor/mysql"
 )
@@ -32,7 +32,11 @@ func init() {
 	envconfig.MustProcess("", &env)
 }
 
+// type server struct{}
+
 func main() {
+	//More readable log, with line
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	// Connect to database
 	db, err := mysql.Connect(env.DBHost, env.DBName, env.DBPort, env.DBUsername, env.DBPassword)
 	if err == nil {
@@ -43,14 +47,32 @@ func main() {
 		ctx := context.WithValue(context.Background(), "URL_MOVIE", env.MovieUrl)
 		ctx = context.WithValue(ctx, "OMDB_KEY", env.OMDBKey)
 
-		application := pusdafil.NewService(ctx, mysql.NewMovieRepo(db))
+		application := movie.NewService(ctx, mysql.NewMovieRepo(db))
 
-		// REST API Routes
+		// interactor
 		router := httprouter.New()
+		//grpc TO DO: Complete GRPC (Rework GRPC plug-n-play method, need make compatible method to work with current design structure)
+		// s := grpc.NewServer()
+		// svcgrpc.RegisterMovieServiceServer(s, &server{})
+		// reflection.Register(s)
+		//Rest
 		restapi := rest.NewRestAPI(ctx, application)
 		restapi.WithRoutes(router)
+		if err := http.ListenAndServe(":8089", router); err == nil {
+			log.Println("Server Running on port :8089")
+			// lis, err := net.Listen("tcp", "0.0.0.0:5005")
+			// if err != nil {
+			// 	log.Fatalf("Failed to listen :%v", err)
+			// }
 
-		log.Fatal(http.ListenAndServe(":8089", router))
+			// if err := s.Serve(lis); err != nil {
+			// 	log.Fatalf("failed to serve grpc: %v", err)
+			// }
+
+		} else {
+			log.Fatal(err.Error())
+		}
+
 	} else {
 		log.Println(err.Error())
 	}
