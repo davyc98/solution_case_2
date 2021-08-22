@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package grpc;
+option go_package = "interactor/grpc";
+
+service MovieService {
+  rpc Search (GetMoviesRequest) returns (GetMoviesResponse) {}
+  rpc Detail (GetMoviesRequest) returns (GetMoviesResponse) {}
+}
+
+message Movie {
+    string imbdbID = 1;
+    string Title = 2;
+    int64 Year = 3;
+    string Type = 4;
+    string Poster = 5;
+}
+message GetMoviesRequest {
+  string movieName = 1; 
+   int64 page = 2;
+}
+  
+message GetMoviesResponse {
+  repeated Movie movies = 1; 
+}
