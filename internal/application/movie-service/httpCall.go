@@ -9,7 +9,7 @@ import (
 	"log"
 )
 
-func searchMovie(url string, resp interface{}) (executionTime float64, err error) {
+func SearchMovie(url string, resp interface{}) (executionTime float64, err error) {
 
 	start := time.Now()
 	response, err := http.Get(url)

@@ -14,7 +14,7 @@ func (svc *MovieService) Search(ctx context.Context, movieName string, page int,
 	url := svc.ctx.Value("URL_MOVIE").(string)
 	key := svc.ctx.Value("OMDB_KEY").(string)
 	url = fmt.Sprintf("%s/?apikey=%s&s=%s&page=%d", url, key, movieName, page)
-	exec, err := searchMovie(url, &res)
+	exec, err := SearchMovie(url, &res)
 	res.ExecutionTime = exec
 
 	marshalRes, _ := json.Marshal(res)
@@ -31,7 +31,7 @@ func (svc *MovieService) Detail(ctx context.Context, movieId string, model model
 	key := svc.ctx.Value("OMDB_KEY").(string)
 
 	url = fmt.Sprintf("%s/?apikey=%s&i=%s", url, key, movieId)
-	exec, err := searchMovie(url, &response)
+	exec, err := SearchMovie(url, &response)
 	response.ExecutionTime = exec
 
 	marshalRes, _ := json.Marshal(response)
@@ -39,5 +39,5 @@ func (svc *MovieService) Detail(ctx context.Context, movieId string, model model
 	model.Url = url
 
 	_, _ = svc.movieRepo.movie.Detail(ctx, movieId, model)
-	return response, nil
+	return response, err
 }

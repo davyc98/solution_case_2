@@ -9,7 +9,7 @@ type SearchResponse struct {
 type Movie struct {
 	ImdbID string `json:"imdbID"`
 	Title  string `json:"Title"`
-	Year   int    `json:"Year"`
+	Year   string `json:"Year"`
 	Type   string `json:"Type"`
 	Poster string `json:"Poster"`
 }

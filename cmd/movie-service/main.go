@@ -2,7 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
 
 	"log"
 
@@ -58,22 +61,31 @@ func main() {
 		//Rest
 		restapi := rest.NewRestAPI(ctx, application)
 		restapi.WithRoutes(router)
-		if err := http.ListenAndServe(":8089", router); err == nil {
-			log.Println("Server Running on port :8089")
-			// lis, err := net.Listen("tcp", "0.0.0.0:5005")
-			// if err != nil {
-			// 	log.Fatalf("Failed to listen :%v", err)
-			// }
 
-			// if err := s.Serve(lis); err != nil {
-			// 	log.Fatalf("failed to serve grpc: %v", err)
-			// }
+		go func() {
+			fmt.Println("Starting Server on port 8089..")
+			if err := http.ListenAndServe(":8089", router); err == nil {
+				// lis, err := net.Listen("tcp", "0.0.0.0:5005")
+				// if err != nil {
+				// 	log.Fatalf("Failed to listen :%v", err)
+				// }
 
-		} else {
-			log.Fatal(err.Error())
-		}
+				// if err := s.Serve(lis); err != nil {
+				// 	log.Fatalf("failed to serve grpc: %v", err)
+				// }
+			} else {
+				log.Fatal(err.Error())
+			}
+
+		}()
+
+		ch := make(chan os.Signal, 1)
+		signal.Notify(ch, os.Interrupt)
+
+		<-ch
+		fmt.Println("Stopping the server")
 
 	} else {
-		log.Println(err.Error())
+		log.Println("Database failed to connect")
 	}
 }
