@@ -3,9 +3,16 @@
 
 GRPC in working progress, still new with GRPC, TO DO: Adjust GRPC implementation into current design architecture
 
-Project Layout 
+## Architectural Approach
+### Hexagonal Architecture
+Using Clean Code Architectural Approach, specifically addopting [netflix's Hexagonal Architecture](https://netflixtechblog.com/ready-for-changes-with-hexagonal-architecture-b315ec967749) 
+![Netflix's Hexagonal Architecture](https://miro.medium.com/max/700/1*NfFzI7Z-E3ypn8ahESbDzw.png)
+
+### Project Layout
+```
 ├── cmd
 │   └── {service_name}  // service entrypoint
+├── docker  // dockerfiles directory
 ├── internal
 │   ├── application
 │   │   └── {application_name} // application logic
@@ -23,3 +30,4 @@ Project Layout
 │   └── {dependency_package}
 ├── README.md
 └── script // bash script directory
+```
