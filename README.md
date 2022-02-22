@@ -9,8 +9,8 @@ GRPC in working progress, still new with GRPC, TO DO: Adjust GRPC implementation
 ## Quick Start
 
 ```bash
-cd cmd/heimdallr
-go build && ./heimdallr
+cd cmd/movie-service
+go build && ./movie-service
 ```
 
 ## Architectural Approach
